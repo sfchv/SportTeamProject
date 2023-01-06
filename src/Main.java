@@ -17,7 +17,10 @@ public class Main {
         SQL_CONTROLLER = new SQLController();
         // заполняем таблицу командами
         fillDB(teams);
-        // запускаем выполениния заданий
+
+        //SQL_CONTROLLER.showTeamTableData();
+        //SQL_CONTROLLER.showPlayersTableData();
+
         Task1();
         Task2();
         Task3();
@@ -28,6 +31,10 @@ public class Main {
             SQL_CONTROLLER.addTeam(team);
         }
     }
+
+
+
+
 
     public static void Task1() throws SQLException, IOException {
         //Постройте график по среднему возрасту во всех командах.

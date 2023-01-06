@@ -24,9 +24,11 @@ public class SQLController {
         if (conn.createStatement().executeQuery(
             "SELECT count(*) FROM sqlite_master WHERE type = 'table'"
         ).getInt(1) != 0) {
+            // чистим базу, что не создавать дубликаты
             conn.createStatement().execute("DELETE FROM players");
-            conn.createStatement().execute("UPDATE sqlite_sequence SET seq = 0 WHERE name ='teams'");
             conn.createStatement().execute("DELETE FROM teams");
+            conn.createStatement().execute("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'teams'");
+            conn.createStatement().execute("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'players'");
         }
 
         addPlayerTable();
@@ -54,6 +56,25 @@ public class SQLController {
             + ");";
 
         conn.createStatement().execute(sqlCreatePlayersTable);
+    }
+
+    public void showTeamTableData() throws SQLException {
+        String selectAll = "SELECT * FROM teams";
+        printResultSet(conn.createStatement().executeQuery(selectAll));
+    }
+
+    public void showPlayersTableData() throws SQLException {
+        String selectAll = "SELECT * FROM players";
+        printResultSet(conn.createStatement().executeQuery(selectAll));
+    }
+
+    private void printResultSet(ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            for (var i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+               System.out.print(rs.getString(i + 1) + " ");
+            }
+            System.out.println();
+        }
     }
 
     public void addTeam(Team team) throws SQLException {
@@ -145,15 +166,16 @@ public class SQLController {
     }
 
     public String getTeamWithAvgByHeightAndWeight(List<String> teamNames) throws SQLException {
+        List<String> teams = new ArrayList<>();
         for (String name : teamNames) {
             Double avgHeightByTeam = getAverageHeightByTeam(name);
             Double avgWeightByTeam = getAverageWeightByTeam(name);
-            String teamWithOlderPlayers = getTeamWithOlderPlayers(teamNames);
             if (74 <= avgHeightByTeam && avgHeightByTeam <= 78 && 190 <= avgWeightByTeam
-                && avgWeightByTeam <= 210 && name == teamWithOlderPlayers) {
-                return name;
+                && avgWeightByTeam <= 210) {
+                teams.add(name);
             }
         }
-        return "Ничего не найдено";
+
+        return getTeamWithOlderPlayers(teams);
     }
 }
