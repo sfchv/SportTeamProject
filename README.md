@@ -1,4 +1,4 @@
-# UlearFinalProjectJava - Вариант 7
+# UlearnJavaSportTeamProject - Вариант 7
 
 1. Для данных из csv файла создадим 2 класса Team и Player
 Team - будет хранить в себе название команды, а также список игроков.
