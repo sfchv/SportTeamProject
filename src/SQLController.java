@@ -120,7 +120,7 @@ public class SQLController {
     }
 
     public double getAverageHeightByTeam(String teamName) throws SQLException {
-        int getTeamId = getTeam(teamName).getInt(1) + 1;
+        int getTeamId = getTeam(teamName).getInt(1);
         String avgAgeByTeamSql =
             "SELECT AVG(height) FROM players WHERE team_id = '" + getTeamId + "'";
         ResultSet averageHeight = conn.createStatement().executeQuery(avgAgeByTeamSql);
@@ -128,7 +128,7 @@ public class SQLController {
     }
 
     public double getAverageWeightByTeam(String teamName) throws SQLException {
-        int getTeamId = getTeam(teamName).getInt(1) + 1;
+        int getTeamId = getTeam(teamName).getInt(1);
         String avgAgeByTeamSql =
             "SELECT AVG(weight) FROM players WHERE team_id = '" + getTeamId + "'";
         ResultSet averageHeight = conn.createStatement().executeQuery(avgAgeByTeamSql);
