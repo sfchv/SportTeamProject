@@ -25,12 +25,12 @@ Player - будет хранить в себе такие поля как: Им�
 <br /><br /><br />
 
 7. Выводим полученные данные в консоль.
-![image](https://user-images.githubusercontent.com/116917002/210931426-16aa1b40-6978-4ae3-9899-edcca4d4db57.png)
+![210931426-16aa1b40-6978-4ae3-9899-edcca4d4db57](https://user-images.githubusercontent.com/116917002/211209061-7db93cf4-0ca5-479b-9fcf-91663561acc2.png)
 <br /><br /><br />
 
 8. Числовые данные визуализируем в виде графика.
 ![chart](https://user-images.githubusercontent.com/116917002/210931580-74571bfd-b679-4f8f-a195-36fe2b74f572.jpg)
 
 9. Выводим решение задач
-![image](https://user-images.githubusercontent.com/116917002/210933250-8f1d8484-2dc5-462d-8e3c-634b1d379d87.png)
+![6ZAcr-H8rJc](https://user-images.githubusercontent.com/116917002/211209073-695cc53a-7ab6-43ad-93e5-11619b399c8a.jpg)
 
