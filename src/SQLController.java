@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -27,8 +29,10 @@ public class SQLController {
             // чистим базу, что не создавать дубликаты
             conn.createStatement().execute("DELETE FROM players");
             conn.createStatement().execute("DELETE FROM teams");
-            conn.createStatement().execute("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'teams'");
-            conn.createStatement().execute("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'players'");
+            conn.createStatement()
+                .execute("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'teams'");
+            conn.createStatement()
+                .execute("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'players'");
         }
 
         addPlayerTable();
@@ -37,23 +41,23 @@ public class SQLController {
 
     public void addTeamTable() throws SQLException {
         String sqlCreateTeamsTable = "CREATE TABLE IF NOT EXISTS teams(\n"
-            + "id integer primary key AUTOINCREMENT,\n"
-            + "name text not null UNIQUE\n"
-            + ");";
+                                     + "id integer primary key AUTOINCREMENT,\n"
+                                     + "name text not null UNIQUE\n"
+                                     + ");";
         conn.createStatement().execute(sqlCreateTeamsTable);
     }
 
     public void addPlayerTable() throws SQLException {
         String sqlCreatePlayersTable = "CREATE TABLE IF NOT EXISTS players (\n"
-            + "id integer not null PRIMARY KEY AUTOINCREMENT,\n"
-            + "name text not null,\n"
-            + "position text not null,\n"
-            + "height integer not null,\n"
-            + "weight integer not null,\n"
-            + "age real not null,\n"
-            + "team_id integer,\n"
-            + "FOREIGN KEY (team_id) REFERENCES teams(id)\n"
-            + ");";
+                                       + "id integer not null PRIMARY KEY AUTOINCREMENT,\n"
+                                       + "name text not null,\n"
+                                       + "position text not null,\n"
+                                       + "height integer not null,\n"
+                                       + "weight integer not null,\n"
+                                       + "age real not null,\n"
+                                       + "team_id integer,\n"
+                                       + "FOREIGN KEY (team_id) REFERENCES teams(id)\n"
+                                       + ");";
 
         conn.createStatement().execute(sqlCreatePlayersTable);
     }
@@ -71,7 +75,7 @@ public class SQLController {
     private void printResultSet(ResultSet rs) throws SQLException {
         while (rs.next()) {
             for (var i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-               System.out.print(rs.getString(i + 1) + " ");
+                System.out.print(rs.getString(i + 1) + " ");
             }
             System.out.println();
         }
@@ -95,7 +99,7 @@ public class SQLController {
     public void addPlayer(Player player, int teamId) throws SQLException {
         String sqlInsertPlayer =
             "INSERT INTO players(name, position, height, weight, age, team_id)\n"
-                + "VALUES (?,?,?,?,?,?);";
+            + "VALUES (?,?,?,?,?,?);";
 
         PreparedStatement preparedStatement = conn.prepareStatement(sqlInsertPlayer);
         preparedStatement.setString(1, player.getName());
@@ -145,16 +149,26 @@ public class SQLController {
         return allTeamNames;
     }
 
-    public Entry<String, Double> getTeamWithHigherAvgHeight(List<String> teamNames)
-        throws SQLException {
+    public List<String> getTeamWithHigherAvgHeight(List<String> teamNames) throws SQLException {
         Map<String, Double> avgHeightByTeam = new HashMap<>();
 
         for (String name : teamNames) {
+            System.out.println(name);
             avgHeightByTeam.put(name, getAverageHeightByTeam(name));
         }
 
-        return avgHeightByTeam.entrySet().stream().max(
-            Comparator.comparing(Entry::getValue)).get();
+        var name = avgHeightByTeam.entrySet().stream().max(Entry.comparingByValue()).get().getKey();
+        var query =
+            "SELECT DISTINCT name FROM players \n"
+            + "WHERE team_id IN (SELECT DISTINCT id FROM teams WHERE name = '" + name + "')\n"
+            + "ORDER BY height DESC LIMIT 5";
+
+        List<String> players = new ArrayList<>();
+        ResultSet rs = conn.createStatement().executeQuery(query);
+        while (rs.next()) {
+            players.add(rs.getString(1));
+        }
+        return players;
     }
 
     public String getTeamWithOlderPlayers(List<String> teamNames) throws SQLException {
