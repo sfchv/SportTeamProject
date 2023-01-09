@@ -32,5 +32,4 @@ Player - будет хранить в себе такие поля как: Им�
 ![chart](https://user-images.githubusercontent.com/116917002/210931580-74571bfd-b679-4f8f-a195-36fe2b74f572.jpg)
 
 9. Выводим решение задач
-![6ZAcr-H8rJc](https://user-images.githubusercontent.com/116917002/211209073-695cc53a-7ab6-43ad-93e5-11619b399c8a.jpg)
-
+<img width="1150" alt="image" src="https://user-images.githubusercontent.com/116917002/211384491-7fb5624d-6cd0-4a4d-8ba4-d31d402a9eed.png">
