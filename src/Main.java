@@ -18,9 +18,6 @@ public class Main {
         // заполняем таблицу командами
         fillDB(teams);
 
-        //SQL_CONTROLLER.showTeamTableData();
-        //SQL_CONTROLLER.showPlayersTableData();
-
         Task1();
         Task2();
         Task3();
@@ -31,9 +28,6 @@ public class Main {
             SQL_CONTROLLER.addTeam(team);
         }
     }
-
-
-
 
 
     public static void Task1() throws SQLException, IOException {
@@ -57,12 +51,11 @@ public class Main {
     public static void Task2() throws SQLException {
         //Найдите команду с самым высоким средним ростом. Выведите в консоль 5 самых высоких игроков команды.
         // получаем название команды и самый высокий средний рост
-        Entry<String, Double> teamAvgHigherHeight =
+        var teamAvgHigherHeight =
             SQL_CONTROLLER.getTeamWithHigherAvgHeight(SQL_CONTROLLER.getAllTeamName());
-        // выводим данные
-        System.out.println(
-            "Команда с самым высоким средним ростом - " + teamAvgHigherHeight.getKey()
-                + " он составил: " + teamAvgHigherHeight.getValue()
+
+        System.out.println("Cостав данный команды с самым высоким средним ростом: "
+                           + String.join(", ", teamAvgHigherHeight)
         );
     }
 
@@ -70,8 +63,8 @@ public class Main {
         //Найдите команду, с средним ростом равным от 74 до 78 inches и средним весом от 190 до 210 lbs, с самым высоким средним возрастом.
         System.out.println(
             "Команда, с средним ростом равным от 74 до 78 inches"
-                + " и средним весом от 190 до 210 lbs, с самым высоким средним возрастом - "
-                + SQL_CONTROLLER.getTeamWithAvgByHeightAndWeight(SQL_CONTROLLER.getAllTeamName())
+            + " и средним весом от 190 до 210 lbs, с самым высоким средним возрастом - "
+            + SQL_CONTROLLER.getTeamWithAvgByHeightAndWeight(SQL_CONTROLLER.getAllTeamName())
         );
     }
 }
